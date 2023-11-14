@@ -7,8 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Access to the configuration.
+var configuration = builder.Configuration;
+
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("CodeLabAPI"));
+//builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("CodeLabAPI"));
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    var connectionString = configuration.GetConnectionString("DefaultConnection"); 
+    var serverVersion = new MySqlServerVersion(new Version(8, 0, 34));
+    options.UseMySql(connectionString, serverVersion);
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddEndpointsApiExplorer();
