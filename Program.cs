@@ -1,4 +1,5 @@
 using codelab_exam_server.Data;
+using codelab_exam_server.ErrorHandling;
 using codelab_exam_server.Services.TopicService;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
