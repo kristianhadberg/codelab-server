@@ -1,6 +1,7 @@
 using Azure.Core;
 using codelab_exam_server.Data;
 using codelab_exam_server.Dtos;
+using codelab_exam_server.Dtos.Topic;
 using codelab_exam_server.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +16,14 @@ public class TopicService : ITopicService
         _dbContext = dbContext;
     }
     
-    public async Task<IEnumerable<TopicDto>> GetAllTopics()
+    public async Task<IEnumerable<TopicResponse>> GetAllTopics()
     {
         var topics = await _dbContext.Topics.ToListAsync();
         
-        return topics.Select(t => TopicToDto(t)).ToList();
+        return topics.Select(t => TopicToResponse(t)).ToList();
     }
 
-    public async Task<TopicDto> GetTopicById(int id)
+    public async Task<TopicResponse> GetTopicById(int id)
     {
         var topic = await _dbContext.Topics.FindAsync(id);
         if (topic == null)
@@ -30,20 +31,20 @@ public class TopicService : ITopicService
             throw new Exception("Topic with given id not found.");
         }
 
-        return TopicToDto(topic);
+        return TopicToResponse(topic);
     }
 
-    public async Task<TopicDto> CreateTopic(TopicDto topicDto)
+    public async Task<TopicResponse> CreateTopic(TopicRequest topicRequest)
     {
-        var topic = ToEntity(topicDto);
+        var topic = ToEntity(topicRequest);
         
         _dbContext.Topics.Add(topic);
         await _dbContext.SaveChangesAsync();
 
-        return topicDto;
+        return TopicToResponse(topic);
     }   
 
-    public async Task<TopicDto> UpdateTopic(int id, TopicDto topicDto)
+    public async Task<TopicResponse> UpdateTopic(int id, TopicRequest topicRequest)
     {
         var topic = await _dbContext.Topics.FindAsync(id);
         if (topic == null)
@@ -51,14 +52,14 @@ public class TopicService : ITopicService
             throw new Exception("Topic with given id not found.");
         }
 
-        topic.Name = topicDto.Name;
+        topic.Name = topicRequest.Name;
 
         await _dbContext.SaveChangesAsync();
 
-        return topicDto;
+        return TopicToResponse(topic);
     }
 
-    public async Task<TopicDto> DeleteTopic(int id)
+    public async Task<TopicResponse> DeleteTopic(int id)
     {
         var topic = await _dbContext.Topics.FindAsync(id);
         if (topic == null)
@@ -69,20 +70,19 @@ public class TopicService : ITopicService
         _dbContext.Topics.Remove(topic);
         await _dbContext.SaveChangesAsync();
 
-        return TopicToDto(topic);
+        return TopicToResponse(topic);
     }
 
-    private static TopicDto TopicToDto(Topic topic) =>
-        new TopicDto()
+    private static TopicResponse TopicToResponse(Topic topic) =>
+        new TopicResponse()
         {
             Id = topic.Id,
             Name = topic.Name
         };
 
-    private static Topic ToEntity(TopicDto topicDto) =>
+    private static Topic ToEntity(TopicRequest topicRequest) =>
         new Topic()
         {
-            Id = topicDto.Id,
-            Name = topicDto.Name
+            Name = topicRequest.Name
         };
 }
