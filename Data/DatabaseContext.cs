@@ -8,4 +8,5 @@ public class DatabaseContext : DbContext
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
     
     public DbSet<Topic> Topics { get; set; }
+    public DbSet<Exercise> Exercises { get; set; }
 }

@@ -6,11 +6,11 @@ namespace codelab_exam_server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TopicController : ControllerBase
+public class TopicsController : ControllerBase
 {
     private readonly ITopicService _topicService;
     
-    public TopicController(ITopicService topicService)
+    public TopicsController(ITopicService topicService)
     {
         _topicService = topicService;
     }

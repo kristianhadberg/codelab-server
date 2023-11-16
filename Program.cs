@@ -1,5 +1,7 @@
 using codelab_exam_server.Data;
+using codelab_exam_server.Dtos.Exercise;
 using codelab_exam_server.ErrorHandling;
+using codelab_exam_server.Services.ExerciseService;
 using codelab_exam_server.Services.TopicService;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,8 +22,15 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddTransient<ITopicService, TopicService>();
+builder.Services.AddTransient<IExerciseService, ExerciseService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// only for development
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(b => b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
 
 var app = builder.Build();
 
@@ -31,6 +40,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
