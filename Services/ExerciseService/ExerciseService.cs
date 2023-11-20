@@ -4,6 +4,7 @@ using codelab_exam_server.Dtos.Topic;
 using codelab_exam_server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace codelab_exam_server.Services.ExerciseService;
 
@@ -33,6 +34,17 @@ public class ExerciseService : IExerciseService
         return ExerciseToResponse(exercise);
     }
 
+    public async Task<IEnumerable<ExerciseResponse>> GetAllExercisesByTopicId(int topicId)
+    {
+        var exercises = await _dbContext.Exercises
+            .AsNoTracking()
+            .Where(e => e.TopicId == topicId)
+            .Select(e => ExerciseToResponse(e)).ToListAsync();
+
+
+        return exercises;
+    }
+
     public async Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest)
     {
         var exercise = ToEntity(exerciseRequest);
@@ -57,6 +69,7 @@ public class ExerciseService : IExerciseService
         {
             Id = exercise.Id,
             Name = exercise.Name,
+            Description = exercise.Description,
             TopicId = exercise.TopicId,
             StarterCode = exercise.StarterCode,
             ExpectedOutput = exercise.ExpectedOutput
@@ -66,6 +79,7 @@ public class ExerciseService : IExerciseService
         new Exercise()
         {
             Name = exerciseRequest.Name,
+            Description = exerciseRequest.Description,
             TopicId = exerciseRequest.TopicId,
             StarterCode = exerciseRequest.StarterCode,
             ExpectedOutput = exerciseRequest.ExpectedOutput
