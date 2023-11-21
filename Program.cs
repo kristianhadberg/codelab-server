@@ -1,7 +1,7 @@
 using codelab_exam_server.Data;
-using codelab_exam_server.Dtos.Exercise;
 using codelab_exam_server.ErrorHandling;
 using codelab_exam_server.Services.ExerciseService;
+using codelab_exam_server.Services.SubmissionService;
 using codelab_exam_server.Services.TopicService;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +23,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<IExerciseService, ExerciseService>();
+builder.Services.AddTransient<ISubmissionService, SubmissionService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -8,5 +8,6 @@ public class Exercise
     public int TopicId { get; set; }
     public string StarterCode { get; set; }
     public string ExpectedOutput { get; set; }
+    public IList<Submission> Submissions { get; } = new List<Submission>();
     
 }

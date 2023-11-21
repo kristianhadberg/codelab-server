@@ -40,8 +40,7 @@ public class ExerciseService : IExerciseService
             .AsNoTracking()
             .Where(e => e.TopicId == topicId)
             .Select(e => ExerciseToResponse(e)).ToListAsync();
-
-
+        
         return exercises;
     }
 

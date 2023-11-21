@@ -9,4 +9,5 @@ public class DatabaseContext : DbContext
     
     public DbSet<Topic> Topics { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
+    public DbSet<Submission> Submissions { get; set; }
 }

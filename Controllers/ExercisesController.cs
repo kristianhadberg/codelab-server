@@ -53,7 +53,6 @@ public class ExercisesController : ControllerBase
     
     // DELETE
     [HttpDelete("{id}")]
-    
     public async Task<ExerciseResponse> Delete(int id)
     {
         return await _exerciseService.DeleteExercise(id);
