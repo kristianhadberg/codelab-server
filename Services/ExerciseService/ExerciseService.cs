@@ -1,10 +1,7 @@
 using codelab_exam_server.Data;
 using codelab_exam_server.Dtos.Exercise;
-using codelab_exam_server.Dtos.Topic;
 using codelab_exam_server.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace codelab_exam_server.Services.ExerciseService;
 

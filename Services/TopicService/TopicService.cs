@@ -1,6 +1,4 @@
-using Azure.Core;
 using codelab_exam_server.Data;
-using codelab_exam_server.Dtos;
 using codelab_exam_server.Dtos.Topic;
 using codelab_exam_server.Models;
 using Microsoft.EntityFrameworkCore;

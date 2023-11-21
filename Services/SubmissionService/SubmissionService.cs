@@ -1,10 +1,7 @@
-using System.Text;
 using codelab_exam_server.Data;
 using codelab_exam_server.Dtos.Submission;
 using codelab_exam_server.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Json;
-using Newtonsoft.Json;
 
 namespace codelab_exam_server.Services.SubmissionService;
 
@@ -71,31 +68,7 @@ public class SubmissionService : ISubmissionService
     {
         throw new NotImplementedException();
     }
-
-    /*public async Task<SubmitJson> TestRequest()
-    {
-        string url = "http://localhost:2358/submissions/?base64_encoded=true&wait=true&fields=status";
-        var body = new
-        {
-            source_code =
-                "cHVibGljIGNsYXNzIE1haW57CiAgICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdYXJncyl7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJIZWxsbywgV29ybGQhIik7CiAgICAgfQp9",
-            language_id = 62,
-            expected_output = "SGVsbG8sIFdvcmxkIQ=="
-        };
-        
-        // serialize to json
-        string jsonContent = JsonConvert.SerializeObject(body);
-        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-        
-        HttpResponseMessage response = await _httpClient.PostAsync(url, content);
-        response.EnsureSuccessStatusCode();
-
-        // deserialize to SubmitJson object
-        var submitJson = await response.Content.ReadFromJsonAsync<SubmitJson>();
-        
-        return submitJson;
-    }*/
-
+    
     private static SubmissionResponse SubmissionToResponse(Submission submission) =>
         new SubmissionResponse()
         {
