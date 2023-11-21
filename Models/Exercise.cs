@@ -9,5 +9,4 @@ public class Exercise
     public string StarterCode { get; set; }
     public string ExpectedOutput { get; set; }
     public IList<Submission> Submissions { get; } = new List<Submission>();
-    
 }

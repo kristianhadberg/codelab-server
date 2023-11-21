@@ -1,5 +1,6 @@
 using codelab_exam_server.Dtos.Exercise;
 using codelab_exam_server.Dtos.Submission;
+using codelab_exam_server.Models;
 using codelab_exam_server.Services.SubmissionService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,5 +52,11 @@ public class SubmissionsController
     {
         return await _submissionService.DeleteSubmission(id);
     }
+
+    /*[HttpPost("test")]
+    public async Task<SubmitJson> Test()
+    {
+        return await _submissionService.TestRequest();
+    }*/
     
 }

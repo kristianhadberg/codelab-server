@@ -1,5 +1,6 @@
 using codelab_exam_server.Data;
 using codelab_exam_server.ErrorHandling;
+using codelab_exam_server.Services;
 using codelab_exam_server.Services.ExerciseService;
 using codelab_exam_server.Services.SubmissionService;
 using codelab_exam_server.Services.TopicService;
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<IExerciseService, ExerciseService>();
 builder.Services.AddTransient<ISubmissionService, SubmissionService>();
+builder.Services.AddHttpClient<JudgeZeroSubmissionHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
