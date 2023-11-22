@@ -75,7 +75,8 @@ public class TopicService : ITopicService
         new TopicResponse()
         {
             Id = topic.Id,
-            Name = topic.Name
+            Name = topic.Name,
+            Description = topic.Description
         };
 
     private static Topic ToEntity(TopicRequest topicRequest) =>
