@@ -17,50 +17,27 @@ public class JudgeZeroSubmissionHandler
         _dbContext = dbContext;
     }
     
-    /*public async Task<JudgeZeroSubmissionStatus> JudgeSubmission(SubmissionRequest submissionRequest)
-    {
-        string url = "http://localhost:2358/submissions/?base64_encoded=true&wait=true&fields=status";
-        
-        // BASE64 encode the submission & the expected output
-        string submittedCode = submissionRequest.SubmittedCode;
-        byte[] submittedBytes = Encoding.UTF8.GetBytes(submittedCode);
-        string base64SubmittedString = Convert.ToBase64String(submittedBytes);
-
-        var exercise = await _dbContext.Exercises.FindAsync(submissionRequest.ExerciseId);
-        byte[] expectedBytes = Encoding.UTF8.GetBytes(exercise.ExpectedOutput);
-        string base64ExpectedString = Convert.ToBase64String(expectedBytes);
-        
-        var body = new
-        {
-            source_code =
-                base64SubmittedString,
-            language_id = 62, // Judge zero language id for Java
-            expected_output = base64ExpectedString
-        };
-        
-        // serialize to json
-        string jsonContent = JsonConvert.SerializeObject(body);
-        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-        
-        HttpResponseMessage response = await _httpClient.PostAsync(url, content);
-        response.EnsureSuccessStatusCode();
-
-        // deserialize to SubmitJson object
-        var submitJson = await response.Content.ReadFromJsonAsync<JudgeZeroSubmissionStatus>();
-        
-        return submitJson;
-    }*/
-    
     public async Task<JudgeZeroSubmissionStatus> JudgeSubmission(SubmissionRequest submissionRequest)
     {
         string judge0Url = "http://localhost:2358/submissions/?base64_encoded=true&wait=true&fields=status,stdout";
         var exercise = await _dbContext.Exercises.FindAsync(submissionRequest.ExerciseId);
 
         string sourceCode = exercise.SourceCode;
-
-        // Appends the users submitted code to the source code which
-        // runs the source code together with the users code.
-        string modifiedCode = AppendBeforeLastCharacter(sourceCode, submissionRequest.SubmittedCode);
+        string modifiedCode = "";
+        if (sourceCode == null)
+        {
+            // if there is not source code to append user code to,
+            // run all the user code
+            // this is for cases where the user writes their own Main class (i.e, writes the entire program)
+            modifiedCode = submissionRequest.SubmittedCode;
+        }
+        else
+        {
+            // Appends the users submitted code to the source code which
+            // runs the source code together with the users code.
+             modifiedCode = AppendBeforeLastCharacter(sourceCode, submissionRequest.SubmittedCode);
+        }
+        
 
         string base64EncodeSubmissionCode = Base64Encode(modifiedCode);
         string base64EncodeExpectedOutput = Base64Encode(exercise.ExpectedOutput);
@@ -87,9 +64,16 @@ public class JudgeZeroSubmissionHandler
     {
         int lastIndex = original.LastIndexOf('}');
         
-        StringBuilder stringBuilder = new StringBuilder(original);
-        stringBuilder.Insert(lastIndex, toAppend);
-        return stringBuilder.ToString();
+        if (lastIndex != -1)
+        {
+            StringBuilder stringBuilder = new StringBuilder(original);
+            stringBuilder.Insert(lastIndex, toAppend);
+            return stringBuilder.ToString();
+        }
+        else
+        {
+            return original;
+        }
     }
 
     private static string Base64Encode(string stringToEncode)
