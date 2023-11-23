@@ -2,6 +2,7 @@ namespace codelab_exam_server.Models;
 
 public class JudgeZeroSubmissionStatus
 {
+    public string Stdout { get; set; }
     public SubmitStatus Status {get; set; }
 }
 

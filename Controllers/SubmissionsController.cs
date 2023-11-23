@@ -1,4 +1,5 @@
 using codelab_exam_server.Dtos.Submission;
+using codelab_exam_server.Models;
 using codelab_exam_server.Services.SubmissionService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +41,7 @@ public class SubmissionsController
     }
 
     [HttpPost]
-    public async Task<ActionResult<SubmissionResponse>> Post(SubmissionRequest submissionRequest)
+    public async Task<ActionResult<JudgeZeroSubmissionStatus>> Post(SubmissionRequest submissionRequest)
     {
         return await _submissionService.CreateSubmission(submissionRequest);
     }

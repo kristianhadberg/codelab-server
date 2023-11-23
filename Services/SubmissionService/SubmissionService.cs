@@ -44,19 +44,18 @@ public class SubmissionService : ISubmissionService
         return submissions;
     }
 
-    public async Task<SubmissionResponse> CreateSubmission(SubmissionRequest submissionRequest)
+    public async Task<JudgeZeroSubmissionStatus> CreateSubmission(SubmissionRequest submissionRequest)
     {
         var submitJson = await _judgeZeroSubmissionHandler.JudgeSubmission(submissionRequest);
-        if (submitJson.Status.Description != "Accepted")
+        
+        if (submitJson.Status.Description == "Accepted")
         {
-            throw new Exception("Submission not accepted");
+            var submission = ToEntity(submissionRequest);
+            _dbContext.Submissions.Add(submission);
+            await _dbContext.SaveChangesAsync();
         }
         
-        var submission = ToEntity(submissionRequest);
-        _dbContext.Submissions.Add(submission);
-        await _dbContext.SaveChangesAsync();
-
-        return SubmissionToResponse(submission);
+        return submitJson;
     }
 
     public Task<SubmissionResponse> UpdateSubmission(int id, SubmissionRequest submissionRequest)

@@ -77,6 +77,7 @@ public class ExerciseService : IExerciseService
             Name = exerciseRequest.Name,
             Description = exerciseRequest.Description,
             TopicId = exerciseRequest.TopicId,
+            SourceCode = exerciseRequest.SourceCode,
             StarterCode = exerciseRequest.StarterCode,
             ExpectedOutput = exerciseRequest.ExpectedOutput
         };
