@@ -9,5 +9,6 @@ public class Exercise
     public string? SourceCode { get; set; } = null;
     public string StarterCode { get; set; }
     public string ExpectedOutput { get; set; }
+    public IList<TestCase> TestCases { get; } = new List<TestCase>();
     public IList<Submission> Submissions { get; } = new List<Submission>();
 }

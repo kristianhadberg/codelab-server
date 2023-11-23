@@ -1,3 +1,5 @@
+using codelab_exam_server.Models;
+
 namespace codelab_exam_server.Dtos.Exercise;
 
 public class ExerciseResponse
@@ -8,4 +10,6 @@ public class ExerciseResponse
     public int TopicId { get; set; }
     public string StarterCode { get; set; }
     public string ExpectedOutput { get; set; }
+    public IList<TestCase> TestCases { get; set; }
+
 }
