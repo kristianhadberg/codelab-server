@@ -1,33 +1,41 @@
 using codelab_exam_server.Data;
 using codelab_exam_server.ErrorHandling;
+using codelab_exam_server.Helpers;
 using codelab_exam_server.Services;
 using codelab_exam_server.Services.ExerciseService;
 using codelab_exam_server.Services.SubmissionService;
 using codelab_exam_server.Services.TopicService;
+using codelab_exam_server.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 // Access to the configuration.
 var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
-//builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("CodeLabAPI"));
+
+// Database connection
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     var connectionString = configuration.GetConnectionString("DefaultConnection"); 
     var serverVersion = new MySqlServerVersion(new Version(8, 0, 34));
     options.UseMySql(connectionString, serverVersion);
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Services
 builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<IExerciseService, ExerciseService>();
 builder.Services.AddTransient<ISubmissionService, SubmissionService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddHttpClient<JudgeZeroSubmissionHandler>();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddOptions();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
 
 // only for development
 builder.Services.AddCors(options =>

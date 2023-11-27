@@ -15,14 +15,14 @@ public class TopicsController : ControllerBase
         _topicService = topicService;
     }
     
-    // GET: api/Topic
+    // GET: api/topic
     [HttpGet]
     public async Task<IEnumerable<TopicResponse>> GetAll()
     {
         return await _topicService.GetAllTopics();
     }
     
-    // GET: api/Topic/5
+    // GET: api/topic/5
     [HttpGet("{id}")]
     public async Task<TopicResponse> Get(int id)
     {
@@ -36,7 +36,7 @@ public class TopicsController : ControllerBase
         return await _topicService.UpdateTopic(id, topicRequest);
     }
     
-    // POST: api/Topic
+    // POST: api/topic
     [HttpPost]
     public async Task<ActionResult<TopicResponse>> Post(TopicRequest topicRequest)
     {
