@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace codelab_exam_server.Controllers;
 
-public class UserController
+[Route("api/[controller]")]
+[ApiController]
+public class UsersController
 {
     private readonly IUserService _userService;
 
-    public UserController(IUserService userService)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
     }
@@ -22,9 +24,9 @@ public class UserController
     }
     
     [HttpPost("login")]
-    public async Task<UserResponse> Login(UserRequest userRequest)
+    public async Task<UserResponse> Login(LoginRequest loginRequest)
     {
-        var userResponse = await _userService.Login(userRequest);
+        var userResponse = await _userService.Login(loginRequest);
         return userResponse;
     }
 }

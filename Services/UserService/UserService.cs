@@ -39,15 +39,15 @@ public class UserService : IUserService
         return UserToResponse(user);
     }
 
-    public async Task<UserResponse> Login(UserRequest userRequest)
+    public async Task<UserResponse> Login(LoginRequest loginRequest)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username.Equals(userRequest.Username));
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username.Equals(loginRequest.Username));
         if (user == null)
         {
             throw new Exception("User not found");
         }
 
-        if (!VerifyPasswordHash(userRequest.Password, user.PasswordHash, user.PasswordSalt))
+        if (!VerifyPasswordHash(loginRequest.Password, user.PasswordHash, user.PasswordSalt))
         {
             throw new Exception("Bad password");
         }
@@ -58,6 +58,8 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Username = user.Username,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             Token = token
         };
         return userResponse;
@@ -103,7 +105,9 @@ public class UserService : IUserService
         new UserResponse()
         {
             Id = user.Id,
-            Username = user.Username
+            Username = user.Username,
+            FirstName = user.FirstName,
+            LastName = user.LastName
         };
     
     private static User ToEntity(UserResponse userResponse) =>
