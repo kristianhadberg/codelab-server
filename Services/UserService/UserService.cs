@@ -29,6 +29,8 @@ public class UserService : IUserService
         var user = new User()
         {
             Username = userRequest.Username,
+            FirstName = userRequest.FirstName,
+            LastName = userRequest.LastName,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt
         };

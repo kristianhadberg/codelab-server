@@ -82,6 +82,7 @@ public class TopicService : ITopicService
     private static Topic ToEntity(TopicRequest topicRequest) =>
         new Topic()
         {
-            Name = topicRequest.Name
+            Name = topicRequest.Name,
+            Description = topicRequest.Description
         };
 }
