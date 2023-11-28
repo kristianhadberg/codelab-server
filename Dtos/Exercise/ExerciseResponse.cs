@@ -11,5 +11,5 @@ public class ExerciseResponse
     public string StarterCode { get; set; }
     public string ExpectedOutput { get; set; }
     public IList<TestCase> TestCases { get; set; }
-
+    public int SubmissionCount { get; set; }
 }

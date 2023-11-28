@@ -15,16 +15,20 @@ public class ExerciseService : IExerciseService
     }
     public async Task<IEnumerable<ExerciseResponse>> GetAllExercises()
     {
-        /*var exercises = await _dbContext.Exercises.ToListAsync();*/
-        var exercises = await _dbContext.Exercises.Include(e => e.TestCases).ToListAsync();
+        var exercises = await _dbContext.Exercises
+            .Include(e => e.TestCases)
+            .Include(e => e.Submissions)
+            .ToListAsync();
 
         return exercises.Select(t => ExerciseToResponse(t)).ToList();
     }
 
     public async Task<ExerciseResponse> GetExerciseById(int id)
     {
-        var exercise = await _dbContext.Exercises.Include(e => e.TestCases).FirstOrDefaultAsync(e => e.Id == id);
-        /*var exercise = await _dbContext.Exercises.FindAsync(id);*/
+        var exercise = await _dbContext.Exercises
+            .Include(e => e.TestCases)
+            .Include(e => e.Submissions)
+            .FirstOrDefaultAsync(e => e.Id == id);
         if (exercise == null)
         {
             throw new Exception("Exercise with given id not found.");
@@ -72,7 +76,8 @@ public class ExerciseService : IExerciseService
             TopicId = exercise.TopicId,
             StarterCode = exercise.StarterCode,
             ExpectedOutput = exercise.ExpectedOutput,
-            TestCases = exercise.TestCases
+            TestCases = exercise.TestCases,
+            SubmissionCount = exercise.Submissions.Count
         };
 
     private static Exercise ToEntity(ExerciseRequest exerciseRequest) =>
