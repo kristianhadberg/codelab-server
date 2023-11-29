@@ -73,6 +73,7 @@ public class SubmissionService : ISubmissionService
         new SubmissionResponse()
         {
             Id = submission.Id,
+            UserId = submission.UserId,
             SubmittedCode = submission.SubmittedCode,
             SubmissionDate = submission.SubmissionDate,
             ExerciseId = submission.ExerciseId
@@ -82,6 +83,7 @@ public class SubmissionService : ISubmissionService
         new Submission()
         {
             SubmittedCode = submissionRequest.SubmittedCode,
-            ExerciseId = submissionRequest.ExerciseId
+            ExerciseId = submissionRequest.ExerciseId,
+            UserId = submissionRequest.UserId
         };
 }
