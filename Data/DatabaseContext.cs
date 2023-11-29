@@ -11,4 +11,6 @@ public class DatabaseContext : DbContext
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<Submission> Submissions { get; set; }
     public DbSet<User> Users { get; set; }
+
+
 }

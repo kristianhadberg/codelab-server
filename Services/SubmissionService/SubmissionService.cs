@@ -53,6 +53,7 @@ public class SubmissionService : ISubmissionService
             var submission = ToEntity(submissionRequest);
             _dbContext.Submissions.Add(submission);
             await _dbContext.SaveChangesAsync();
+            submitJson.SubmissionResponse = SubmissionToResponse(submission);
         }
         
         return submitJson;

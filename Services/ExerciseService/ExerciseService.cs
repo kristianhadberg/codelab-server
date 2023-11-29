@@ -41,6 +41,7 @@ public class ExerciseService : IExerciseService
     {
         var exercises = await _dbContext.Exercises
             .Include(e => e.TestCases)
+            .Include(e => e.Submissions)
             .AsNoTracking()
             .Where(e => e.TopicId == topicId)
             .Select(e => ExerciseToResponse(e)).ToListAsync();

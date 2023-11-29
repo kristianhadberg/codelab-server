@@ -4,6 +4,6 @@ public class Submission
 {
     public int Id { get; set; }
     public string SubmittedCode { get; set; }
-    public DateTime SubmissionDate { get; } = DateTime.Today;
+    public DateTime SubmissionDate { get; set; } = DateTime.UtcNow;
     public int ExerciseId { get; set; }
 }
