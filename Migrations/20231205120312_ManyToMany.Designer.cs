@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using codelab_exam_server.Data;
 
@@ -10,9 +11,11 @@ using codelab_exam_server.Data;
 namespace codelab_exam_server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231205120312_ManyToMany")]
+    partial class ManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,23 +85,6 @@ namespace codelab_exam_server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LearningPaths");
-                });
-
-            modelBuilder.Entity("codelab_exam_server.Models.LearningPathTopic", b =>
-                {
-                    b.Property<int>("LearningPathTopicId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("LearningPathId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TopicId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LearningPathTopicId");
-
-                    b.ToTable("LearningPathTopics");
                 });
 
             modelBuilder.Entity("codelab_exam_server.Models.Submission", b =>

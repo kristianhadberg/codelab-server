@@ -32,6 +32,24 @@ public class TopicService : ITopicService
         return TopicToResponse(topic);
     }
 
+    public async Task<IEnumerable<TopicResponse>> GetTopicsByLearningPathId(int learningPathId)
+    {
+        var topicIds = await _dbContext.LearningPathTopics
+            .AsNoTracking()
+            .Where(lpt => lpt.LearningPathId == learningPathId)
+            .Select(lpt => lpt.TopicId)
+            .ToListAsync();
+        
+        
+        var topics = await _dbContext.Topics
+            .AsNoTracking()
+            .Where(t => topicIds.Contains(t.Id))
+            .Select(t => TopicToResponse(t))
+            .ToListAsync();
+        
+        return topics;
+    }
+
     public async Task<TopicResponse> CreateTopic(TopicRequest topicRequest)
     {
         var topic = ToEntity(topicRequest);

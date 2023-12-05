@@ -8,6 +8,7 @@ public interface ITopicService
 {
     Task<IEnumerable<TopicResponse>> GetAllTopics();
     Task<TopicResponse> GetTopicById(int id);
+    Task<IEnumerable<TopicResponse>> GetTopicsByLearningPathId(int learningPathId);
     Task<TopicResponse> CreateTopic(TopicRequest topicRequest);
     Task<TopicResponse> UpdateTopic(int id, TopicRequest topicRequest);
     Task<TopicResponse> DeleteTopic(int id);

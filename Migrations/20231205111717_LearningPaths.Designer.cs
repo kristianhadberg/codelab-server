@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using codelab_exam_server.Data;
 
@@ -10,29 +11,16 @@ using codelab_exam_server.Data;
 namespace codelab_exam_server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231205111717_LearningPaths")]
+    partial class LearningPaths
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("LearningPathTopic", b =>
-                {
-                    b.Property<int>("LearningPathsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TopicsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LearningPathsId", "TopicsId");
-
-                    b.HasIndex("TopicsId");
-
-                    b.ToTable("LearningPathTopic");
-                });
 
             modelBuilder.Entity("codelab_exam_server.Models.Exercise", b =>
                 {
@@ -82,23 +70,6 @@ namespace codelab_exam_server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LearningPaths");
-                });
-
-            modelBuilder.Entity("codelab_exam_server.Models.LearningPathTopic", b =>
-                {
-                    b.Property<int>("LearningPathTopicId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("LearningPathId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TopicId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LearningPathTopicId");
-
-                    b.ToTable("LearningPathTopics");
                 });
 
             modelBuilder.Entity("codelab_exam_server.Models.Submission", b =>
@@ -161,11 +132,16 @@ namespace codelab_exam_server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("LearningPathId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LearningPathId");
 
                     b.ToTable("Topics");
                 });
@@ -201,21 +177,6 @@ namespace codelab_exam_server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LearningPathTopic", b =>
-                {
-                    b.HasOne("codelab_exam_server.Models.LearningPath", null)
-                        .WithMany()
-                        .HasForeignKey("LearningPathsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("codelab_exam_server.Models.Topic", null)
-                        .WithMany()
-                        .HasForeignKey("TopicsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("codelab_exam_server.Models.Exercise", b =>
                 {
                     b.HasOne("codelab_exam_server.Models.Topic", null)
@@ -243,11 +204,23 @@ namespace codelab_exam_server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("codelab_exam_server.Models.Topic", b =>
+                {
+                    b.HasOne("codelab_exam_server.Models.LearningPath", null)
+                        .WithMany("Topics")
+                        .HasForeignKey("LearningPathId");
+                });
+
             modelBuilder.Entity("codelab_exam_server.Models.Exercise", b =>
                 {
                     b.Navigation("Submissions");
 
                     b.Navigation("TestCases");
+                });
+
+            modelBuilder.Entity("codelab_exam_server.Models.LearningPath", b =>
+                {
+                    b.Navigation("Topics");
                 });
 
             modelBuilder.Entity("codelab_exam_server.Models.Topic", b =>

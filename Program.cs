@@ -3,6 +3,7 @@ using codelab_exam_server.ErrorHandling;
 using codelab_exam_server.Helpers;
 using codelab_exam_server.Services;
 using codelab_exam_server.Services.ExerciseService;
+using codelab_exam_server.Services.LearningPathService;
 using codelab_exam_server.Services.SubmissionService;
 using codelab_exam_server.Services.TopicService;
 using codelab_exam_server.Services.UserService;
@@ -27,6 +28,7 @@ builder.Services.AddTransient<ITopicService, TopicService>();
 builder.Services.AddTransient<IExerciseService, ExerciseService>();
 builder.Services.AddTransient<ISubmissionService, SubmissionService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ILearningPathService, LearningPathService>();
 builder.Services.AddHttpClient<JudgeZeroSubmissionHandler>();
 
 

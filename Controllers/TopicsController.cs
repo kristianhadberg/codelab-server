@@ -29,6 +29,13 @@ public class TopicsController : ControllerBase
         return await _topicService.GetTopicById(id);
     }
     
+    // GET: api/topics/learning-path/1
+    [HttpGet("learning-path/{learningPathId}")]
+    public async Task<IEnumerable<TopicResponse>> GetAllByLearningPathId(int learningPathId)
+    {
+        return await _topicService.GetTopicsByLearningPathId(learningPathId);
+    }
+    
     //PUT
     [HttpPut("{id}")]
     public async Task<TopicResponse> Put(int id, TopicRequest topicRequest)
