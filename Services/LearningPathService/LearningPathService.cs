@@ -1,4 +1,5 @@
 using codelab_exam_server.Data;
+using codelab_exam_server.Dtos.Exercise;
 using codelab_exam_server.Dtos.LearningPath;
 using codelab_exam_server.Dtos.Topic;
 using codelab_exam_server.Models;
@@ -19,6 +20,7 @@ public class LearningPathService : ILearningPathService
     {
         var learningPaths = await _dbContext.LearningPaths
             .Include(lp => lp.Topics)
+                .ThenInclude(t => t.Exercises)
             .ToListAsync();
 
         return learningPaths.Select(lp => LearningPathToResponse(lp)).ToList();
@@ -28,6 +30,8 @@ public class LearningPathService : ILearningPathService
     public async Task<LearningPathResponse> GetLearningPathById(int id)
     {
         var learningPath = await _dbContext.LearningPaths
+            .Include(lp => lp.Topics)
+                .ThenInclude(t => t.Exercises.Where(e => e.IsLearningPathExercise))
             .FirstOrDefaultAsync(lp => lp.Id == id);
         if (learningPath == null)
         {
@@ -46,12 +50,15 @@ public class LearningPathService : ILearningPathService
         return LearningPathToResponse(learningPath);
     }
 
+    /*
+     * Mapping methods
+     */
     private static LearningPathResponse LearningPathToResponse(LearningPath lp) =>
         new LearningPathResponse()
         {
             Id = lp.Id,
             Name = lp.Name,
-            TopicResponses = lp.Topics.Select(topic=> TopicToResponse(topic)).ToList() ?? new List<TopicResponse>()
+            Topics = lp.Topics.Select(topic => TopicToResponse(topic)).ToList() ?? new List<TopicResponse>()
         };
     
     private static LearningPath ToEntity(LearningPathRequest learningPathRequest) =>
@@ -65,6 +72,22 @@ public class LearningPathService : ILearningPathService
         {
             Id = topic.Id,
             Name = topic.Name,
-            Description = topic.Description
+            Description = topic.Description,
+            Exercises = topic.Exercises.Select(e => ExerciseToResponse(e)).ToList()
+        };
+    
+    
+    private static ExerciseResponse ExerciseToResponse(Exercise exercise) =>
+        new ExerciseResponse()
+        {
+            Id = exercise.Id,
+            Name = exercise.Name,
+            Description = exercise.Description,
+            TopicId = exercise.TopicId,
+            StarterCode = exercise.StarterCode,
+            ExpectedOutput = exercise.ExpectedOutput,
+            TestCases = exercise.TestCases,
+            SubmissionCount = exercise.Submissions.Count,
+            IsLearningPathExercise = exercise.IsLearningPathExercise
         };
 }

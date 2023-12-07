@@ -7,5 +7,5 @@ public class LearningPathResponse
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public List<TopicResponse> TopicResponses { get; set; }
+    public List<TopicResponse> Topics { get; set; }
 }

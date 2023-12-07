@@ -12,4 +12,5 @@ public class ExerciseResponse
     public string ExpectedOutput { get; set; }
     public IList<TestCase> TestCases { get; set; }
     public int SubmissionCount { get; set; }
+    public bool IsLearningPathExercise { get; set; }
 }

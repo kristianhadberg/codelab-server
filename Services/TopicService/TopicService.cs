@@ -1,4 +1,5 @@
 using codelab_exam_server.Data;
+using codelab_exam_server.Dtos.Exercise;
 using codelab_exam_server.Dtos.Topic;
 using codelab_exam_server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -32,23 +33,20 @@ public class TopicService : ITopicService
         return TopicToResponse(topic);
     }
 
-    /*public async Task<IEnumerable<TopicResponse>> GetTopicsByLearningPathId(int learningPathId)
+    public async Task<IEnumerable<TopicResponse>> GetTopicsByLearningPathId(int learningPathId)
     {
-        var topicIds = await _dbContext.LearningPathTopics
+        var topics = await _dbContext.LearningPaths
+            .Include(lp => lp.Topics)
+                .ThenInclude(t => t.Exercises)
+            .Where(lp => lp.Id == learningPathId)
+            .SelectMany(lp => lp.Topics)
+            .Select(t => t)
             .AsNoTracking()
-            .Where(lpt => lpt.LearningPathId == learningPathId)
-            .Select(lpt => lpt.TopicId)
-            .ToListAsync();
-        
-        
-        var topics = await _dbContext.Topics
-            .AsNoTracking()
-            .Where(t => topicIds.Contains(t.Id))
             .Select(t => TopicToResponse(t))
             .ToListAsync();
         
         return topics;
-    }*/
+    }
 
     public async Task<TopicResponse> CreateTopic(TopicRequest topicRequest)
     {
@@ -89,12 +87,17 @@ public class TopicService : ITopicService
         return TopicToResponse(topic);
     }
 
+    /*
+     * Mapping methods
+     */
     private static TopicResponse TopicToResponse(Topic topic) =>
         new TopicResponse()
         {
             Id = topic.Id,
             Name = topic.Name,
-            Description = topic.Description
+            Description = topic.Description,
+            Exercises = topic.Exercises.Select(e=> ExerciseToResponse(e)).ToList() ?? new List<ExerciseResponse>()
+
         };
 
     private static Topic ToEntity(TopicRequest topicRequest) =>
@@ -102,5 +105,19 @@ public class TopicService : ITopicService
         {
             Name = topicRequest.Name,
             Description = topicRequest.Description
+        };
+    
+    private static ExerciseResponse ExerciseToResponse(Exercise exercise) =>
+        new ExerciseResponse()
+        {
+            Id = exercise.Id,
+            Name = exercise.Name,
+            Description = exercise.Description,
+            TopicId = exercise.TopicId,
+            StarterCode = exercise.StarterCode,
+            ExpectedOutput = exercise.ExpectedOutput,
+            TestCases = exercise.TestCases,
+            SubmissionCount = exercise.Submissions.Count,
+            IsLearningPathExercise = exercise.IsLearningPathExercise
         };
 }

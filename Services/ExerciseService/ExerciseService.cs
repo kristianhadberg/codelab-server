@@ -68,6 +68,9 @@ public class ExerciseService : IExerciseService
         throw new NotImplementedException();
     }
     
+    /*
+     * Mapping methods
+     */
     private static ExerciseResponse ExerciseToResponse(Exercise exercise) =>
         new ExerciseResponse()
         {
@@ -78,7 +81,8 @@ public class ExerciseService : IExerciseService
             StarterCode = exercise.StarterCode,
             ExpectedOutput = exercise.ExpectedOutput,
             TestCases = exercise.TestCases,
-            SubmissionCount = exercise.Submissions.Count
+            SubmissionCount = exercise.Submissions.Count,
+            IsLearningPathExercise = exercise.IsLearningPathExercise
         };
 
     private static Exercise ToEntity(ExerciseRequest exerciseRequest) =>
@@ -89,6 +93,7 @@ public class ExerciseService : IExerciseService
             TopicId = exerciseRequest.TopicId,
             SourceCode = exerciseRequest.SourceCode,
             StarterCode = exerciseRequest.StarterCode,
-            ExpectedOutput = exerciseRequest.ExpectedOutput
+            ExpectedOutput = exerciseRequest.ExpectedOutput,
+            IsLearningPathExercise = exerciseRequest.IsLearningPathExercise
         };
 }
