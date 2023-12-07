@@ -12,6 +12,14 @@ public class DatabaseContext : DbContext
     public DbSet<Submission> Submissions { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<LearningPath> LearningPaths { get; set; }
-    public DbSet<LearningPathTopic> LearningPathTopics { get; set; }
+    /*public DbSet<LearningPathTopic> LearningPathTopics { get; set; }*/
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<LearningPath>()
+            .HasMany(e => e.Topics)
+            .WithMany(e => e.LearningPaths)
+            .UsingEntity(j => j.ToTable("LearningPathTopic"));
+    }
     
 }

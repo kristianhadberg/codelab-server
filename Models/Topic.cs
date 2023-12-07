@@ -8,4 +8,5 @@ public class Topic
     public List<LearningPath> LearningPaths { get; set; }
     public IList<Exercise> Exercises { get; } = new List<Exercise>();
 
+
 }

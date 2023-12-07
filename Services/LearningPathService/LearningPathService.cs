@@ -17,7 +17,9 @@ public class LearningPathService : ILearningPathService
     
     public async Task<IEnumerable<LearningPathResponse>> GetAllLearningPaths()
     {
-        var learningPaths = await _dbContext.LearningPaths.ToListAsync();
+        var learningPaths = await _dbContext.LearningPaths
+            .Include(lp => lp.Topics)
+            .ToListAsync();
 
         return learningPaths.Select(lp => LearningPathToResponse(lp)).ToList();
 
@@ -44,11 +46,12 @@ public class LearningPathService : ILearningPathService
         return LearningPathToResponse(learningPath);
     }
 
-    private LearningPathResponse LearningPathToResponse(LearningPath lp) =>
+    private static LearningPathResponse LearningPathToResponse(LearningPath lp) =>
         new LearningPathResponse()
         {
             Id = lp.Id,
             Name = lp.Name,
+            TopicResponses = lp.Topics.Select(topic=> TopicToResponse(topic)).ToList() ?? new List<TopicResponse>()
         };
     
     private static LearningPath ToEntity(LearningPathRequest learningPathRequest) =>

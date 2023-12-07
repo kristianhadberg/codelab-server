@@ -32,7 +32,7 @@ public class TopicService : ITopicService
         return TopicToResponse(topic);
     }
 
-    public async Task<IEnumerable<TopicResponse>> GetTopicsByLearningPathId(int learningPathId)
+    /*public async Task<IEnumerable<TopicResponse>> GetTopicsByLearningPathId(int learningPathId)
     {
         var topicIds = await _dbContext.LearningPathTopics
             .AsNoTracking()
@@ -48,7 +48,7 @@ public class TopicService : ITopicService
             .ToListAsync();
         
         return topics;
-    }
+    }*/
 
     public async Task<TopicResponse> CreateTopic(TopicRequest topicRequest)
     {
