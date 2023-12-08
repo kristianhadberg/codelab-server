@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using codelab_exam_server.Data;
 
@@ -10,9 +11,11 @@ using codelab_exam_server.Data;
 namespace codelab_exam_server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231208111236_UserExerciseProgress")]
+    partial class UserExerciseProgress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,12 +202,17 @@ namespace codelab_exam_server.Migrations
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int?>("LearningPathId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ExerciseId");
+
+                    b.HasIndex("LearningPathId");
 
                     b.HasIndex("UserId");
 
@@ -261,6 +269,10 @@ namespace codelab_exam_server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("codelab_exam_server.Models.LearningPath", null)
+                        .WithMany("UserExerciseProgresses")
+                        .HasForeignKey("LearningPathId");
+
                     b.HasOne("codelab_exam_server.Models.User", "User")
                         .WithMany("UserExerciseProgresses")
                         .HasForeignKey("UserId")
@@ -278,6 +290,11 @@ namespace codelab_exam_server.Migrations
 
                     b.Navigation("TestCases");
 
+                    b.Navigation("UserExerciseProgresses");
+                });
+
+            modelBuilder.Entity("codelab_exam_server.Models.LearningPath", b =>
+                {
                     b.Navigation("UserExerciseProgresses");
                 });
 

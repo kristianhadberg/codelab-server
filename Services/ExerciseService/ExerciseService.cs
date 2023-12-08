@@ -48,6 +48,19 @@ public class ExerciseService : IExerciseService
         
         return exercises;
     }
+    
+    public async Task<IEnumerable<ExerciseResponse>> GetAllByTopicIdAndUserId(int topicId, int userId)
+    {
+        var exercises = await _dbContext.Exercises
+            .Include(e => e.TestCases)
+            .Include(e => e.Submissions)
+            .Include(e => e.UserExerciseProgresses.Where(uep => uep.UserId == userId))
+            .AsNoTracking()
+            .Where(e => e.TopicId == topicId)
+            .Select(e => ExerciseToResponse(e)).ToListAsync();
+        
+        return exercises;
+    }
 
     public async Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest)
     {
@@ -67,12 +80,15 @@ public class ExerciseService : IExerciseService
     {
         throw new NotImplementedException();
     }
-    
+
     /*
      * Mapping methods
      */
-    private static ExerciseResponse ExerciseToResponse(Exercise exercise) =>
-        new ExerciseResponse()
+    private static ExerciseResponse ExerciseToResponse(Exercise exercise)
+    {
+        var isCompleted = exercise.UserExerciseProgresses?.Any(uep => uep.ExerciseId == exercise.Id) == true;
+    
+        return new ExerciseResponse()
         {
             Id = exercise.Id,
             Name = exercise.Name,
@@ -82,9 +98,11 @@ public class ExerciseService : IExerciseService
             ExpectedOutput = exercise.ExpectedOutput,
             TestCases = exercise.TestCases,
             SubmissionCount = exercise.Submissions.Count,
-            IsLearningPathExercise = exercise.IsLearningPathExercise
+            IsLearningPathExercise = exercise.IsLearningPathExercise,
+            IsCompleted = isCompleted
         };
-
+    }
+    
     private static Exercise ToEntity(ExerciseRequest exerciseRequest) =>
         new Exercise()
         {
@@ -96,4 +114,5 @@ public class ExerciseService : IExerciseService
             ExpectedOutput = exerciseRequest.ExpectedOutput,
             IsLearningPathExercise = exerciseRequest.IsLearningPathExercise
         };
+    
 }

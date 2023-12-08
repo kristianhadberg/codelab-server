@@ -29,6 +29,13 @@ public class LearningPathsController
         return await _learningPathService.GetLearningPathById(id);
     }
     
+    // GET: api/learning-paths/1/1
+    [HttpGet("{id}/{userId}")]
+    public async Task<LearningPathResponse> GetByIdAndUserId(int id, int userId)
+    {
+        return await _learningPathService.GetLearningPathByIdAndUserId(id, userId);
+    }
+    
     // POST: api/exercises
     [HttpPost]
     public async Task<ActionResult<LearningPathResponse>> Post(LearningPathRequest learningPathRequest)

@@ -53,10 +53,31 @@ public class SubmissionService : ISubmissionService
             var submission = ToEntity(submissionRequest);
             _dbContext.Submissions.Add(submission);
             await _dbContext.SaveChangesAsync();
+            await UpdateExerciseProgress(submissionRequest.UserId, submissionRequest.ExerciseId);
             submitJson.SubmissionResponse = SubmissionToResponse(submission);
         }
         
         return submitJson;
+    }
+
+    public async Task UpdateExerciseProgress(int userId, int exerciseId)
+    {
+        var userExerciseProgress =
+            await _dbContext.UserExerciseProgresses.SingleOrDefaultAsync(uep =>
+                uep.UserId == userId && uep.ExerciseId == exerciseId);
+
+        if (userExerciseProgress == null)
+        {
+            userExerciseProgress = new UserExerciseProgress
+            {
+                UserId = userId,
+                ExerciseId = exerciseId,
+                IsCompleted = true
+            };
+            _dbContext.UserExerciseProgresses.Add(userExerciseProgress);
+        }
+
+        await _dbContext.SaveChangesAsync();
     }
 
     public Task<SubmissionResponse> UpdateSubmission(int id, SubmissionRequest submissionRequest)

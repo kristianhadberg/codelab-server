@@ -12,4 +12,5 @@ public class Exercise
     public bool IsLearningPathExercise { get; set; }
     public IList<TestCase> TestCases { get; } = new List<TestCase>();
     public IList<Submission> Submissions { get; } = new List<Submission>();
+    public List<UserExerciseProgress> UserExerciseProgresses { get; set; }
 }

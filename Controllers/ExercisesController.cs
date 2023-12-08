@@ -37,6 +37,13 @@ public class ExercisesController : ControllerBase
         return await _exerciseService.GetAllExercisesByTopicId(topicId);
     }
     
+    // GET: api/exercises/topic/
+    [HttpGet("topic/{topicId}/{userId}")]
+    public async Task<IEnumerable<ExerciseResponse>> GetAllByTopicIdAndUserId(int topicId, int userId)
+    {
+        return await _exerciseService.GetAllByTopicIdAndUserId(topicId, userId);
+    }
+    
     //PUT
     [HttpPut("{id}")]
     public async Task<ExerciseResponse> Put(int id, ExerciseRequest exerciseRequest)

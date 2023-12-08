@@ -41,6 +41,21 @@ public class LearningPathService : ILearningPathService
         return LearningPathToResponse(learningPath);
     }
     
+    public async Task<LearningPathResponse> GetLearningPathByIdAndUserId(int id, int userId)
+    {
+        var learningPath = await _dbContext.LearningPaths
+            .Include(lp => lp.Topics)
+            .ThenInclude(t => t.Exercises.Where(e => e.IsLearningPathExercise))
+            .ThenInclude(e => e.UserExerciseProgresses.Where(uep => uep.UserId == userId))
+            .FirstOrDefaultAsync(lp => lp.Id == id);
+        if (learningPath == null)
+        {
+            throw new Exception("Learning path with given id not found.");
+        }
+
+        return LearningPathToResponse(learningPath);
+    }
+    
     public async Task<LearningPathResponse> CreateLearningPath(LearningPathRequest learningPathRequest)
     {
         var learningPath = ToEntity(learningPathRequest);
@@ -76,9 +91,11 @@ public class LearningPathService : ILearningPathService
             Exercises = topic.Exercises.Select(e => ExerciseToResponse(e)).ToList()
         };
     
+    private static ExerciseResponse ExerciseToResponse(Exercise exercise)
+    {
+        var isCompleted = exercise.UserExerciseProgresses?.Any(uep => uep.ExerciseId == exercise.Id) == true;
     
-    private static ExerciseResponse ExerciseToResponse(Exercise exercise) =>
-        new ExerciseResponse()
+        return new ExerciseResponse()
         {
             Id = exercise.Id,
             Name = exercise.Name,
@@ -88,6 +105,8 @@ public class LearningPathService : ILearningPathService
             ExpectedOutput = exercise.ExpectedOutput,
             TestCases = exercise.TestCases,
             SubmissionCount = exercise.Submissions.Count,
-            IsLearningPathExercise = exercise.IsLearningPathExercise
+            IsLearningPathExercise = exercise.IsLearningPathExercise,
+            IsCompleted = isCompleted
         };
+    }
 }

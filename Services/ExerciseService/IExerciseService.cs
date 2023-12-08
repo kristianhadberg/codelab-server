@@ -10,4 +10,5 @@ public interface IExerciseService
     Task<ExerciseResponse> CreateExercise(ExerciseRequest exerciseRequest);
     Task<ExerciseResponse> UpdateExercise(int id, ExerciseRequest exerciseRequest);
     Task<ExerciseResponse> DeleteExercise(int id);
+    Task<IEnumerable<ExerciseResponse>> GetAllByTopicIdAndUserId(int topicId, int userId);
 }

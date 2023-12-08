@@ -8,6 +8,5 @@ public interface ILearningPathService
     Task<IEnumerable<LearningPathResponse>> GetAllLearningPaths();
     Task<LearningPathResponse> GetLearningPathById(int id);
     Task<LearningPathResponse> CreateLearningPath(LearningPathRequest learningPathRequest);
-    /*Task<ExerciseResponse> UpdateExercise(int id, ExerciseRequest exerciseRequest);
-    Task<ExerciseResponse> DeleteExercise(int id);#1#*/
+    Task<LearningPathResponse> GetLearningPathByIdAndUserId(int id, int userId);
 }
