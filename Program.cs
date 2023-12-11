@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using codelab_exam_server.Data;
 using codelab_exam_server.ErrorHandling;
 using codelab_exam_server.Helpers;
@@ -14,6 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+    // serialize enums as strings in api responses (e.g. Role)
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 // Database connection
 builder.Services.AddDbContext<DatabaseContext>(options =>
@@ -30,6 +36,7 @@ builder.Services.AddTransient<ISubmissionService, SubmissionService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ILearningPathService, LearningPathService>();
 builder.Services.AddHttpClient<JudgeZeroSubmissionHandler>();
+
 
 
 builder.Services.AddEndpointsApiExplorer();

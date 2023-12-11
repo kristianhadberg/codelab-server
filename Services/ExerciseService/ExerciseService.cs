@@ -99,6 +99,7 @@ public class ExerciseService : IExerciseService
             TestCases = exercise.TestCases,
             SubmissionCount = exercise.Submissions.Count,
             IsLearningPathExercise = exercise.IsLearningPathExercise,
+            Difficulty = exercise.Difficulty,
             IsCompleted = isCompleted
         };
     }

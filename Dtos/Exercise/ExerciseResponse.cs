@@ -13,5 +13,6 @@ public class ExerciseResponse
     public IList<TestCase> TestCases { get; set; }
     public int SubmissionCount { get; set; }
     public bool IsLearningPathExercise { get; set; }
+    public Difficulty Difficulty { get; set; }
     public bool IsCompleted { get; set; }
 }

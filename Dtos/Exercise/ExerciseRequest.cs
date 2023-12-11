@@ -1,3 +1,5 @@
+using codelab_exam_server.Models;
+
 namespace codelab_exam_server.Dtos.Exercise;
 
 public class ExerciseRequest
@@ -9,4 +11,5 @@ public class ExerciseRequest
     public string StarterCode { get; set; }
     public string ExpectedOutput { get; set; }
     public bool IsLearningPathExercise { get; set; }
+    public Difficulty Difficulty { get; set; }
 }

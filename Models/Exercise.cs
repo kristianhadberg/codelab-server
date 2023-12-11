@@ -1,5 +1,12 @@
 namespace codelab_exam_server.Models;
 
+public enum Difficulty
+{
+    Beginner,
+    Intermediate,
+    Advanced
+}
+
 public class Exercise
 {
     public int Id { get; set; }
@@ -10,6 +17,7 @@ public class Exercise
     public string StarterCode { get; set; }
     public string ExpectedOutput { get; set; }
     public bool IsLearningPathExercise { get; set; }
+    public Difficulty Difficulty { get; set; }
     public IList<TestCase> TestCases { get; } = new List<TestCase>();
     public IList<Submission> Submissions { get; } = new List<Submission>();
     public List<UserExerciseProgress> UserExerciseProgresses { get; set; }
