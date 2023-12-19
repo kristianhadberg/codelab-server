@@ -88,7 +88,8 @@ public class LearningPathService : ILearningPathService
             Id = topic.Id,
             Name = topic.Name,
             Description = topic.Description,
-            Exercises = topic.Exercises.Select(e => ExerciseToResponse(e)).ToList()
+            Exercises = topic.Exercises.Select(e => ExerciseToResponse(e)).ToList(),
+            IsCompleted =  topic.Exercises.All(e => ExerciseToResponse(e).IsCompleted)
         };
     
     private static ExerciseResponse ExerciseToResponse(Exercise exercise)
