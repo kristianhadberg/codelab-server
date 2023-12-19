@@ -55,7 +55,35 @@ public class LearningPathService : ILearningPathService
 
         return LearningPathToResponse(learningPath);
     }
-    
+
+    public async Task<LearningPathProgressResponse> GetLearningPathProgressByIdAndUserId(int id, int userId)
+    {
+        var learningPath = await _dbContext.LearningPaths
+            .Include(lp => lp.Topics)
+            .ThenInclude(t => t.Exercises.Where(e => e.IsLearningPathExercise))
+            .ThenInclude(e => e.UserExerciseProgresses.Where(uep => uep.UserId == userId))
+            .FirstOrDefaultAsync(lp => lp.Id == id);
+        if (learningPath == null)
+        {
+            throw new Exception("Learning path with given id not found.");
+        }
+        
+        var topics = learningPath.Topics.Select(topic => TopicToResponse(topic)).ToList();
+        
+        var allExercises = topics.SelectMany(t => t.Exercises);
+        var completedExercises = allExercises.Count(e => e.IsCompleted);
+        var totalExercises = allExercises.Count();
+
+        LearningPathProgressResponse learningPathProgressResponse = new LearningPathProgressResponse()
+        {
+            CompletedExercises = completedExercises,
+            TotalExercises = totalExercises,
+            PercentageCompleted = totalExercises > 0 ? (decimal)completedExercises / totalExercises * 100 : 0
+        };
+
+        return learningPathProgressResponse;
+    }
+
     public async Task<LearningPathResponse> CreateLearningPath(LearningPathRequest learningPathRequest)
     {
         var learningPath = ToEntity(learningPathRequest);

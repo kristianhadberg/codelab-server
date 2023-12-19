@@ -9,4 +9,5 @@ public interface ILearningPathService
     Task<LearningPathResponse> GetLearningPathById(int id);
     Task<LearningPathResponse> CreateLearningPath(LearningPathRequest learningPathRequest);
     Task<LearningPathResponse> GetLearningPathByIdAndUserId(int id, int userId);
+    Task<LearningPathProgressResponse> GetLearningPathProgressByIdAndUserId(int id, int userId);
 }
