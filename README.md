@@ -17,9 +17,14 @@ This application serves as the backend for an E-Learning Platform designed to fa
 - **RESTful API:** Utilizes a RESTful API for seamless communication with the frontend.
 
 ## Technologies used
-- **C# (.NET Core)**
-- **Entiy Framework Core**
-- **ASP.NET Core Web API**
+- **Backend:**
+   - **C# (.NET Core)**
+   - **Entity Framework Core**
+   - **ASP.NET Core Web API**
+- **Frontend:**
+   - **React**
+   - **TypeScript**
+   - **Redux**
 
 ## Getting Started
 
