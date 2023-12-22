@@ -92,8 +92,7 @@ public class JudgeZeroSubmissionHandler
     {
         return new
         {
-            source_code =
-                sourceCode,
+            source_code = sourceCode,
             language_id = 62, // Judge0 language id for Java
             expected_output = expectedOutput
         };

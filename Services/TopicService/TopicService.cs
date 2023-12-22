@@ -96,7 +96,7 @@ public class TopicService : ITopicService
             Id = topic.Id,
             Name = topic.Name,
             Description = topic.Description,
-            Exercises = topic.Exercises.Select(e=> ExerciseToResponse(e)).ToList() ?? new List<ExerciseResponse>()
+            Exercises = topic.Exercises.Select(e=> ExerciseToResponse(e)).ToList()
         };
 
     private static Topic ToEntity(TopicRequest topicRequest) =>
